@@ -38,6 +38,8 @@ import redis.clients.jedis.Protocol;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
@@ -93,6 +95,7 @@ public class RedisClient extends DB {
       while (!done) {
         try {
           ((Jedis) jedis).connect();    
+          Date date = new Date();
           System.out.println("\nRedis Connected:");
           System.out.println(new Timestamp(date.getTime()));
           done = true;
