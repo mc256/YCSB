@@ -88,7 +88,21 @@ public class RedisClient extends DB {
       } else {
         jedis = new Jedis(host, port);
       }
-      ((Jedis) jedis).connect();
+      boolean done = false;
+      int line = 0;
+      while (!done) {
+        try {
+          ((Jedis) jedis).connect();    
+          done = true;
+        } catch (Exception e) {
+          line += 1;
+          if (line % 100 == 0) {
+            line = 0;
+            System.out.println(".");
+          }
+          System.out.print(".");
+        }
+      }      
     }
 
     String password = props.getProperty(PASSWORD_PROPERTY);
