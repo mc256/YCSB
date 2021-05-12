@@ -96,8 +96,7 @@ public class RedisClient extends DB {
         try {
           ((Jedis) jedis).connect();    
           Date date = new Date();
-          System.out.println("\nRedis Connected:");
-          System.out.println(new Timestamp(date.getTime()));
+          System.out.printf("\nRedis Connected: %s\n", new Timestamp(date.getTime()));
           done = true;
         } catch (Exception e) {
           line += 1;
