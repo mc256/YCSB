@@ -90,7 +90,7 @@ public class StatusThread extends Thread {
     this.clients = clients;
     this.label = label;
     this.standardstatus = standardstatus;
-    sleeptimeNs = TimeUnit.SECONDS.toNanos(statusIntervalSeconds);
+    sleeptimeNs = TimeUnit.MILLISECONDS.toNanos(statusIntervalSeconds);
     measurements = Measurements.getMeasurements();
     this.trackJVMStats = trackJVMStats;
   }
