@@ -102,9 +102,9 @@ public class RedisClient extends DB {
           line += 1;
           if (line % 100 == 0) {
             line = 0;
-            System.out.println(".");
+            //System.out.println(".");
           }
-          System.out.print(".");
+          //System.out.print(".");
         }
       }      
     }
