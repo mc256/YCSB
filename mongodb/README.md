@@ -157,3 +157,18 @@ For example:
 To run with the synchronous driver from MongoDB Inc.:
 
     ./bin/ycsb load mongodb -s -P workloads/workloada -p mongodb.url=mongodb://localhost:27017/ycsb?w=0
+
+
+```shell
+curl http://www.allanbank.com/repo/com/allanbank/mongodb-async-driver/2.0.1/mongodb-async-driver-2.0.1.jar && \
+
+mvn install:install-file \
+   -Dfile=/home/maverick/Downloads/mongodb-async-driver-2.0.1.jar \
+   -DgroupId=com.allanbank \
+   -DartifactId=mongodb-async-driver \
+   -Dversion=2.0.1 \
+   -Dpackaging=jar \
+   -DgeneratePom=true
+```
+
+./bin/ycsb load mongodb-async -s -P workloads/workloada -p "mongodb.url=mongodb://root:123456abc@localhost:27017/ycsb?w=0"
