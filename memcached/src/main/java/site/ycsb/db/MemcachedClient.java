@@ -52,6 +52,9 @@ import org.codehaus.jackson.node.ObjectNode;
 
 import org.apache.log4j.Logger;
 
+import java.io.*;
+import java.sql.Timestamp;
+import java.util.Date;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
@@ -119,6 +122,7 @@ public class MemcachedClient extends DB {
   @Override
   public void init() throws DBException {
     try {
+      // System.out.println("\n==================createMemcachedClient==================");
       client = createMemcachedClient();
       checkOperationStatus = Boolean.parseBoolean(
           getProperties().getProperty(CHECK_OPERATION_STATUS_PROPERTY,
@@ -173,8 +177,27 @@ public class MemcachedClient extends DB {
       }
       addresses.add(new InetSocketAddress(host, port));
     }
-    return new net.spy.memcached.MemcachedClient(
-        connectionFactoryBuilder.build(), addresses);
+    System.out.printf("\n<retry0>\n");
+    net.spy.memcached.MemcachedClient c = new net.spy.memcached.MemcachedClient(
+          connectionFactoryBuilder.build(), addresses);
+    System.out.printf("\n<retry1>\n");
+    while (true) {
+      GetFuture<Object> f = c.asyncGet("someKey");
+      try {        
+        Object myObj = f.get(10, MILLISECONDS);
+        Date date = new Date();
+        System.out.printf("\nMemcached Connected: %s\n", new Timestamp(date.getTime()));
+        break;
+      } catch (Exception e) {  
+        f.cancel(true);
+        c.shutdown();
+        c = new net.spy.memcached.MemcachedClient(
+          connectionFactoryBuilder.build(), addresses);
+        System.out.printf("\n<retry>\n");
+      }
+    }
+
+    return c;
   }
 
   @Override
