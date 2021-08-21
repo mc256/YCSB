@@ -177,10 +177,10 @@ public class MemcachedClient extends DB {
       }
       addresses.add(new InetSocketAddress(host, port));
     }
-    System.out.printf("\n<retry0>\n");
+    //System.out.printf("\n<retry0>\n");
     net.spy.memcached.MemcachedClient c = new net.spy.memcached.MemcachedClient(
           connectionFactoryBuilder.build(), addresses);
-    System.out.printf("\n<retry1>\n");
+    //System.out.printf("\n<retry1>\n");
     while (true) {
       GetFuture<Object> f = c.asyncGet("someKey");
       try {        
@@ -193,7 +193,7 @@ public class MemcachedClient extends DB {
         c.shutdown();
         c = new net.spy.memcached.MemcachedClient(
           connectionFactoryBuilder.build(), addresses);
-        System.out.printf("\n<retry>\n");
+        //System.out.printf("\n<retry>\n");
       }
     }
 
