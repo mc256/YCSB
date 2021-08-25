@@ -141,7 +141,7 @@ public class RedisClient extends DB {
     if (fields == null) {
       try {
         StringByteIterator.putAllAsByteIterators(result, jedis.hgetAll(key));
-      }catch(IOException e) {
+      }catch(redis.clients.jedis.exceptions.JedisDataException e) {
         return Status.ERROR;
       }
     } else {
