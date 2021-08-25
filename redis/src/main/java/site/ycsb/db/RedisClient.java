@@ -139,7 +139,11 @@ public class RedisClient extends DB {
   public Status read(String table, String key, Set<String> fields,
       Map<String, ByteIterator> result) {
     if (fields == null) {
-      StringByteIterator.putAllAsByteIterators(result, jedis.hgetAll(key));
+      try {
+        StringByteIterator.putAllAsByteIterators(result, jedis.hgetAll(key));
+      }catch(IOException e) {
+        return Status.ERROR;
+      }
     } else {
       String[] fieldArray =
           (String[]) fields.toArray(new String[fields.size()]);
