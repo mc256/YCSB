@@ -139,10 +139,15 @@ public class RedisClient extends DB {
   public Status read(String table, String key, Set<String> fields,
       Map<String, ByteIterator> result) {
     if (fields == null) {
-      try {
-        StringByteIterator.putAllAsByteIterators(result, jedis.hgetAll(key));
-      }catch(redis.clients.jedis.exceptions.JedisDataException e) {
-        return Status.ERROR;
+
+      boolean done = false;
+      while (!done) {
+        try {
+          StringByteIterator.putAllAsByteIterators(result, jedis.hgetAll(key));
+          done = true;
+        }catch(redis.clients.jedis.exceptions.JedisDataException e) {
+          done = false;
+        }
       }
     } else {
       String[] fieldArray =
