@@ -139,7 +139,6 @@ public class RedisClient extends DB {
   public Status read(String table, String key, Set<String> fields,
       Map<String, ByteIterator> result) {
     if (fields == null) {
-
       boolean done = false;
       while (!done) {
         try {
@@ -186,8 +185,16 @@ public class RedisClient extends DB {
   @Override
   public Status update(String table, String key,
       Map<String, ByteIterator> values) {
-    return jedis.hmset(key, StringByteIterator.getStringMap(values))
-        .equals("OK") ? Status.OK : Status.ERROR;
+    boolean done = false;
+    while (!done) {
+      try {
+        return jedis.hmset(key, StringByteIterator.getStringMap(values))
+            .equals("OK") ? Status.OK : Status.ERROR;
+      }catch(redis.clients.jedis.exceptions.JedisDataException e) {
+        done = false;
+      }
+    }
+    return Status.ERROR;
   }
 
   @Override
